@@ -63,16 +63,16 @@ public class CommandeService {
      * @return la commande mise à jour
      */
     @Transactional
-    public Commande enregistreExpédition(Integer commandeNum) {
-        var Commande = commandeDao.findById(commandeNum).orElseThrow();
+    public Commande enregistrerExpédition(Integer commandeNum) {
+        var commande = commandeDao.findById(commandeNum).orElseThrow();
         if (Commande.getEnvoyeele() != null){
-            throw new IllegalArgumentException("Pas encore implémenté");
+            throw new IllegalArgumentException("getEnvoyee est null");
         }
         Commande.setEnvoyeele(LocalDate.now());
-        for(var ligne : Commande.getLignes()){
+        for(var ligne : commande.getLignes()){
             var produit = ligne.getProduit();
             produit.setUnitesEnStock(produit.getUnitesEnStock() - ligne.getQuantite());
         }
-        return Commande;
+        return commande;
     }
 }
